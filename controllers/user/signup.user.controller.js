@@ -1,6 +1,8 @@
-export function signupController(req, res) {
+import { createUser } from "../../services/user/signup.user.svc.js";
+
+export async function signupController(req, res) {
     let body = req.body;
-    let fName = body?.fName;
-    let lName = body?.lName;
-    res.json({ fullName: fName + " " + lName});
+
+    const resp = await createUser(body?.name, body?.password);
+    res.json({mssg: "Success", resp:resp});
 }
