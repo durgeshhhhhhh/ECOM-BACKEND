@@ -3,15 +3,19 @@ import { routes } from "./routers/router.js";
 import { dbSetup, getDbInstance } from "./db/config/config.db.js";
 import { createUserTable } from "./migrations/createUser.mig.js";
 
-const app = express();
+async function main() {
+    const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-app.use(routes());
-await dbSetup();
-await createUserTable(getDbInstance());
+    app.use(routes());
+    await dbSetup();
+    await createUserTable(getDbInstance());
 
-app.listen(5000, (req, res) => {
-    console.log("server is running on port 5000");
-});
+    app.listen(5000, (req, res) => {
+        console.log("server is running on port 5000");
+    });
+}
+
+main();
