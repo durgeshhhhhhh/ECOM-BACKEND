@@ -1,19 +1,32 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
+import env from "dotenv";
+
+env.config();
+
 export async function verifyUserInDb(dbObj, user) {
     try {
-        const result = await dbObj.query(
-            "SELECT *FROM USERS WHERE email = $1",
+        const queryResult = await dbObj.query(
+            "SELECT * FROM USERS WHERE email = $1",
             [user.email]
         );
 
-        if (result.rows.length > 0) {
-            const detail = result.rows[0];
+        if (queryResult.rows.length > 0) {
+            const detail = queryResult.rows[0];
             const password = detail.password;
 
-            if (password === user.password) {
-                const res = "CONGRATULATIONS!! you have logedIn successfully";
+            const isMatch = await bcrypt.compare(user.password, password);
+            if (isMatch) {
+                //Generate jwt token
+                const token = jwt.sign(
+                    { id: detail.id, email: detail.email },
+                    process.env.ACCESS_TOKEN_SECRET,
+                    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+                );
+                const res = {message: "Login Succesfull", token};
                 return { res: res, err: null };
             } else {
-                const err = "Username and Password are not valid!!";
+                const err = "Invalid username or password!!";
                 return { res: null, err: err };
             }
         } else {

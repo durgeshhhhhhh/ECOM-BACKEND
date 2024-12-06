@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 export async function createuserInDb(dbObj, user) {
     try {
         const checkResult = await dbObj.query(
@@ -11,9 +12,11 @@ export async function createuserInDb(dbObj, user) {
                 err: "E-mail address already exist..try to logIn",
             };
         } else {
+            const saltRounds = 10;
+            const hash = await bcrypt.hash(user.password, saltRounds);
             const res = await dbObj.query(
                 "INSERT INTO users (email, password) VALUES($1, $2) RETURNING * ",
-                [user.email, user.password]
+                [user.email, hash]
             );
             return { res: res.rows, err: null };
         }
