@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import env from "dotenv";
 
 env.config();
@@ -17,13 +17,28 @@ export async function verifyUserInDb(dbObj, user) {
 
             const isMatch = await bcrypt.compare(user.password, password);
             if (isMatch) {
-                //Generate jwt token
-                const token = jwt.sign(
+                const accessToken = jwt.sign(
                     { id: detail.id, email: detail.email },
                     process.env.ACCESS_TOKEN_SECRET,
                     { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
                 );
-                const res = {message: "Login Succesfull", token};
+
+                const refreshToken = jwt.sign(
+                    { id: detail.id, email: detail.email },
+                    process.env.REFRESH_TOKEN_SECRET,
+                    { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
+                );
+
+                await dbObj.query(
+                    "UPDATE users SET refresh_token = $1 where id = $2",
+                    [refreshToken, detail.id]
+                );
+
+                const res = {
+                    message: "Login Succesfull",
+                    "Access Token":accessToken,
+                    "Refresh Token":refreshToken,
+                };
                 return { res: res, err: null };
             } else {
                 const err = "Invalid username or password!!";

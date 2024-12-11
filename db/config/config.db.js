@@ -17,8 +17,8 @@ export async function dbSetup() {
 
         try {
             await db.connect();
-            const res = await db.query("SELECT NOW()");
-            console.log(res.rows); 
+            const res = "Database Is Connected";
+            console.log(res); 
             dbObj = db;
         } catch (error) {
             console.log(error);

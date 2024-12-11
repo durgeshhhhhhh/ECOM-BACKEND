@@ -9,6 +9,6 @@ export async function verifyUser(email, password) {
     if (!!res.err) {
         return { err: res.err };
     } else {
-        return { mssg: res.res };
+        return res.res;
     }
 }
