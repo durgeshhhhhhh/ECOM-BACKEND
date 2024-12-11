@@ -8,7 +8,7 @@ export function userRoutes(router) {
     var userRouter = Router();
     userRouter.post("/signup", signupController);
     userRouter.post("/login", loginController);
-    userRouter.post("/refresh-token", refreshTokenController)
+    userRouter.post("/refresh-token", refreshTokenController);
 
     userRouter.get("/profile", jwtAuthentication, (req, res) => {
         res.json({ message: "You accessed a protected route", user: req.user });

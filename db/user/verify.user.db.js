@@ -36,8 +36,8 @@ export async function verifyUserInDb(dbObj, user) {
 
                 const res = {
                     message: "Login Succesfull",
-                    "Access Token":accessToken,
-                    "Refresh Token":refreshToken,
+                    "Access Token": accessToken,
+                    "Refresh Token": refreshToken,
                 };
                 return { res: res, err: null };
             } else {

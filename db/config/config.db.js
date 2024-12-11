@@ -18,7 +18,7 @@ export async function dbSetup() {
         try {
             await db.connect();
             const res = "Database Is Connected";
-            console.log(res); 
+            console.log(res);
             dbObj = db;
         } catch (error) {
             console.log(error);
@@ -26,10 +26,10 @@ export async function dbSetup() {
     }
 }
 
-export function getDbInstance(){
-    if(dbObj == null){
+export function getDbInstance() {
+    if (dbObj == null) {
         throw new Error("DB Setup is Pending");
-    }else{
+    } else {
         return dbObj;
     }
 }
