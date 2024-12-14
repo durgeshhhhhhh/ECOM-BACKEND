@@ -1,5 +1,5 @@
 import { getDbInstance } from "../../db/config/config.db.js";
-import { createuserInDb } from "../../db/user/user.db.js";
+import { createuserInDb } from "../../db/user/register.user.db.js";
 
 export async function createUser(name, phone_no, email, password) {
     let dbInstance = getDbInstance();
