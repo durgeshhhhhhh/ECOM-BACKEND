@@ -3,13 +3,11 @@ export async function createUserTable(dbObj) {
         id SERIAL PRIMARY KEY,
         name varchar(100) NOT NULL,
         phone_no varchar(15) UNIQUE,
+        dob DATE NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        refresh_token TEXT
     )`;
 
     let res = await dbObj.query(createUserTableQuery);
-
-    await dbObj.query(`
-        ALTER TABLE "users" ADD COLUMN IF NOT EXISTS refresh_token TEXT;
-    `);
 }

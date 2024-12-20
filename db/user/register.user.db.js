@@ -15,8 +15,8 @@ export async function createuserInDb(dbObj, user) {
             const saltRounds = 10;
             const hash = await bcrypt.hash(user.password, saltRounds);
             const res = await dbObj.query(
-                "INSERT INTO users (name, phone_no, email, password) VALUES($1, $2, $3, $4) RETURNING * ",
-                [user.name, user.phone_no, user.email, hash]
+                "INSERT INTO users (name, phone_no, dob, email, password) VALUES($1, $2, $3, $4, $5) RETURNING * ",
+                [user.name, user.phone_no, user.dob, user.email, hash]
             );
             return { res: res.rows[0], err: null };
         }

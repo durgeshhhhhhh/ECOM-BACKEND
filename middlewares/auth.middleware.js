@@ -13,7 +13,7 @@ export async function jwtAuthentication(req, res, next) {
         let dbObj = getDbInstance();
 
         const user = await dbObj.query(
-            "SELECT name, email, phone_no FROM PUBLIC.users WHERE id = $1",
+            "SELECT id, name, email, phone_no FROM PUBLIC.users WHERE id = $1",
             [id]
         );
 

@@ -6,6 +6,7 @@ export async function signupController(req, res) {
     const resp = await createUser(
         body?.name,
         body?.phone_no,
+        body?.dob,
         body?.email,
         body?.password
     );

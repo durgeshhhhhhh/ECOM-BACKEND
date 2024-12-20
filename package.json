@@ -10,10 +10,13 @@
   "author": "Durgesh Shekhawat",
   "license": "ISC",
   "dependencies": {
+    "-": "^0.0.1",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "g": "^2.0.1",
     "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.1.9",
     "pg": "^8.13.1"
   }
 }
