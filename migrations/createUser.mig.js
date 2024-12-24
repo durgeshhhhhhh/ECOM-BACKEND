@@ -6,7 +6,8 @@ export async function createUserTable(dbObj) {
         dob DATE NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        refresh_token TEXT
+        refresh_token TEXT,
+        logout_at TIMESTAMP WITH TIME ZONE
     )`;
 
     let res = await dbObj.query(createUserTableQuery);

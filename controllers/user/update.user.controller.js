@@ -1,7 +1,7 @@
 import { updateUser } from "../../services/user/update.user.svc.js";
 
 export async function updateUserController(req, res) {
-    const userId = req.user.id;
+    const userId = req.user?.id;
 
     const { name, email, phone_no, dob } = req.body;
 
