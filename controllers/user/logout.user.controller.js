@@ -17,7 +17,7 @@ export async function logoutController(req, res) {
 
         res.json({ message: "Logout Successfull" });
     } catch (error) {
-        console.error("Error during logout:", error)
+        console.error("Error during logout:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 }

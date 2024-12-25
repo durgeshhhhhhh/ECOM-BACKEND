@@ -17,6 +17,11 @@ export async function jwtAuthentication(req, res, next) {
         ]);
 
         const user = result.rows[0];
+        console.log(user.deleted_at);
+
+        if (user.deleted_at) {
+            return res.status(401).json({ error: "Account has been deleted" });
+        }
 
         if (
             user.logout_at &&
