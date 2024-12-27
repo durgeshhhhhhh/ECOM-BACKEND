@@ -6,6 +6,7 @@ import { refreshTokenController } from "../../controllers/user/refreshToken.cont
 import { updateUserController } from "../../controllers/user/update.user.controller.js";
 import { logoutController } from "../../controllers/user/logout.user.controller.js";
 import { deleteUserController } from "../../controllers/user/delete.user.controller.js";
+import { deactivateUserController } from "../../controllers/user/deactivate.user.controller.js";
 
 export function userRoutes(router) {
     var userRouter = Router();
@@ -14,7 +15,8 @@ export function userRoutes(router) {
     userRouter.post("/refresh-token", refreshTokenController);
     userRouter.put("/update", jwtAuthentication, updateUserController);
     userRouter.post("/logout", jwtAuthentication, logoutController);
-    userRouter.delete("/delete", jwtAuthentication, deleteUserController)
+    userRouter.delete("/delete", jwtAuthentication, deleteUserController);
+    userRouter.put("/deactivate", jwtAuthentication, deactivateUserController);
 
     userRouter.get("/profile", jwtAuthentication, (req, res) => {
         res.json({ message: "You accessed a protected route", user: req.user });
