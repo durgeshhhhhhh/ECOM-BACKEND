@@ -13,9 +13,10 @@ export async function softDeleteUserInDb(userId, dbObj) {
             return { res: null, err: "User Not Found" };
         }
 
+        console.log("User Deleted Successfully at:", result.rows[0].deleted_at);
         return { res: result.rows[0], err: null };
     } catch (error) {
-        console.error("Error in softDeleteUserInDb:", error)
+        console.error("Error in softDeleteUserInDb:", error);
         return { res: null, error: error.message };
     }
 }

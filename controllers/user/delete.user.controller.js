@@ -13,5 +13,5 @@ export async function deleteUserController(req, res) {
         return res.status(400).json({ error: response.err });
     }
 
-     res.json({ message: "User Delted successfully!!" });
+    res.json({ message: "User Deleted successfully!!" });
 }

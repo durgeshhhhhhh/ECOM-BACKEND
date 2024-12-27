@@ -11,6 +11,10 @@ export async function verifyUserInDb(dbObj, user) {
             [user.email]
         );
 
+        if (queryResult.rows[0].deleted_at) {
+            return { res: null, err: "Account has been deleted" };
+        }
+
         if (queryResult.rows.length > 0) {
             const detail = queryResult.rows[0];
             const password = detail.password;
@@ -39,6 +43,8 @@ export async function verifyUserInDb(dbObj, user) {
                     "Access Token": accessToken,
                     "Refresh Token": refreshToken,
                 };
+
+                console.log(res);
                 return { res: res, err: null };
             } else {
                 const err = "Invalid username or password!!";

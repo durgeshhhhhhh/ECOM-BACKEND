@@ -15,6 +15,12 @@ export async function logoutController(req, res) {
             [userId]
         );
 
+        const logoutTime = await dbObj.query(
+            "SELECT logout_at FROM users WHERE id = $1",
+            [userId]
+        );
+
+        console.log("User Logout Successfully at:", logoutTime.rows[0].logout_at);
         res.json({ message: "Logout Successfull" });
     } catch (error) {
         console.error("Error during logout:", error);

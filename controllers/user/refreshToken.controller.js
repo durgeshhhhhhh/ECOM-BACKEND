@@ -16,6 +16,10 @@ export async function refreshTokenController(req, res) {
             return res.status(401).json({ error: "Invalid Refresh Token" });
         }
 
+        if (queryResult.rows[0].deleted_at) {
+            return res.status(401).json({ error: "ACCOUNT HAS BEEN DELETED" });
+        }
+
         try {
             const user = jwt.verify(
                 refreshToken,
@@ -28,6 +32,7 @@ export async function refreshTokenController(req, res) {
                 { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
             );
 
+            console.log("New accessToken: ", accessToken);
             res.json({ accessToken });
         } catch (error) {
             returnres.status(401).json({ error: "Invalid Refresh Token" });

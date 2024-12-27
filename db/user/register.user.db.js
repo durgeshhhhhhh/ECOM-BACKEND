@@ -18,9 +18,11 @@ export async function createuserInDb(dbObj, user) {
                 "INSERT INTO users (name, phone_no, dob, email, password) VALUES($1, $2, $3, $4, $5) RETURNING * ",
                 [user.name, user.phone_no, user.dob, user.email, hash]
             );
+            console.log(res.rows[0]);
             return { res: res.rows[0], err: null };
         }
     } catch (err) {
+        console.error("Error in createUSerInDb:", err);
         return { res: null, err: err };
     }
 }

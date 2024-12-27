@@ -17,7 +17,6 @@ export async function jwtAuthentication(req, res, next) {
         ]);
 
         const user = result.rows[0];
-        console.log(user.deleted_at);
 
         if (user.deleted_at) {
             return res.status(401).json({ error: "Account has been deleted" });
@@ -37,6 +36,7 @@ export async function jwtAuthentication(req, res, next) {
             [id]
         );
 
+       // console.log(userData.rows[0]);
         req.user = userData.rows[0];
 
         next();
