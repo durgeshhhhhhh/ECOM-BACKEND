@@ -1,1 +1,7 @@
-export async function deactivateUserInDb() {}
+export async function deactivateUserInDb(userId, dbObj) {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
