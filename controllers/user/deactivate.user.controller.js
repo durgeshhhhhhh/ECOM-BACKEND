@@ -1,4 +1,4 @@
-import { deactivateUser } from "../../services/user/deactivate.user.svc";
+import { deactivateUser } from "../../services/user/deactivate.user.svc.js";
 
 export async function deactivateUserController(req, res) {
     const userId = req.user?.id;
@@ -13,5 +13,5 @@ export async function deactivateUserController(req, res) {
         return res.status(400).json({ error: response.err });
     }
 
-    returnres.json({ message: "User Deactivated Successfully!!" });
+    return res.json({ message: "User Deactivated Successfully!!", resp: response.res });
 }

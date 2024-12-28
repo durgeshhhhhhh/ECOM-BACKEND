@@ -15,6 +15,10 @@ export async function verifyUserInDb(dbObj, user) {
             return { res: null, err: "Account has been deleted" };
         }
 
+        if (queryResult.rows[0].deactivated_at) {
+            return { res: null, err: "Account has been deactivated" };
+        }
+
         if (queryResult.rows.length > 0) {
             const detail = queryResult.rows[0];
             const password = detail.password;

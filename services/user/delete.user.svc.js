@@ -9,6 +9,6 @@ export async function softDeleteUser(userId) {
     if (result.err) {
         return { err: result.err };
     } else {
-        return result.res;
+        return {res: result.res};
     }
 }

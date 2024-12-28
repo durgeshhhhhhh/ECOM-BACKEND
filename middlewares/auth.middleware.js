@@ -22,6 +22,12 @@ export async function jwtAuthentication(req, res, next) {
             return res.status(401).json({ error: "Account has been deleted" });
         }
 
+        if (!user.is_active && !req.path.includes("/activate")) {
+            return res
+                .status(403)
+                .json({ error: "Account has been deactivated" });
+        }
+
         if (
             user.logout_at &&
             new Date(decode.iat * 1000) < new Date(user.logout_at)
@@ -36,7 +42,6 @@ export async function jwtAuthentication(req, res, next) {
             [id]
         );
 
-       // console.log(userData.rows[0]);
         req.user = userData.rows[0];
 
         next();

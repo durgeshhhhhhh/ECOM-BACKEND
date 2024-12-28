@@ -5,8 +5,9 @@ export async function loginController(req, res) {
 
     let response = await verifyUser(body?.email, body?.password);
 
-    if(response.err){
-        return res.status(400).json({error: response.err});
+    if (response.err) {
+        return res.status(400).json({ error: response.err });
     }
+
     res.json({ resp: response });
 }

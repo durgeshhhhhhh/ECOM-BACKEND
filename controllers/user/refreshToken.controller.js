@@ -17,7 +17,7 @@ export async function refreshTokenController(req, res) {
         }
 
         if (queryResult.rows[0].deleted_at) {
-            return res.status(401).json({ error: "ACCOUNT HAS BEEN DELETED" });
+            return res.status(401).json({ error: "Account has been deleted" });
         }
 
         try {

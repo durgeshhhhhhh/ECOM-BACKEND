@@ -1,5 +1,5 @@
-import { deactivateUserInDb } from "../../db/user/deactivate.user.db";
-import { getDbInstance } from "../../db/config/config.db";
+import { deactivateUserInDb } from "../../db/user/deactivate.user.db.js";
+import { getDbInstance } from "../../db/config/config.db.js";
 
 export async function deactivateUser(userId) {
     const dbInstance = getDbInstance();
@@ -9,6 +9,6 @@ export async function deactivateUser(userId) {
     if (!!result.err) {
         return { err: result.err };
     } else {
-        return result.res;
+        return {res: result.res};
     }
 }

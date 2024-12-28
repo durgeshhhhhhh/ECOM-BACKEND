@@ -7,6 +7,7 @@ import { updateUserController } from "../../controllers/user/update.user.control
 import { logoutController } from "../../controllers/user/logout.user.controller.js";
 import { deleteUserController } from "../../controllers/user/delete.user.controller.js";
 import { deactivateUserController } from "../../controllers/user/deactivate.user.controller.js";
+import { activateUserController } from "../../controllers/user/activate.user.controller.js";
 
 export function userRoutes(router) {
     var userRouter = Router();
@@ -17,9 +18,10 @@ export function userRoutes(router) {
     userRouter.post("/logout", jwtAuthentication, logoutController);
     userRouter.delete("/delete", jwtAuthentication, deleteUserController);
     userRouter.put("/deactivate", jwtAuthentication, deactivateUserController);
-
+    userRouter.put("/activate", jwtAuthentication, activateUserController);
     userRouter.get("/profile", jwtAuthentication, (req, res) => {
         res.json({ message: "You accessed a protected route", user: req.user });
     });
+
     router.use("/user", userRouter);
 }

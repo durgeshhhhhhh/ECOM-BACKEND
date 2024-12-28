@@ -10,5 +10,10 @@ export async function signupController(req, res) {
         body?.email,
         body?.password
     );
-    res.json({ mssg: "Successfully registered", resp: resp });
+
+    if (!!resp.err) {
+        return res.status(400).json({ error: resp.err });
+    } else {
+        res.json({ mssg: "Successfully Registered", resp: resp });
+    }
 }
