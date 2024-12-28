@@ -7,6 +7,7 @@ export async function createUserTable(dbObj) {
         email VARCHAR(255) UNIQUE NOT NULL,
         password TEXT NOT NULL,
         refresh_token TEXT,
+        created_at TIMESTAMP WITH TIME ZONE,
         logout_at TIMESTAMP WITH TIME ZONE,
         is_active BOOLEAN DEFAULT TRUE,
         deactivated_at TIMESTAMP WITH TIME ZONE,

@@ -2,7 +2,8 @@ export async function softDeleteUserInDb(userId, dbObj) {
     try {
         const query = ` 
             UPDATE users 
-            SET deleted_at = NOW()
+            SET deleted_at = NOW(),
+            is_active = false
             WHERE id = $1
             returning id, name, email, phone_no, dob, deleted_at;
             `;
@@ -15,7 +16,7 @@ export async function softDeleteUserInDb(userId, dbObj) {
 
         console.log(result.rows[0])
         console.log("User Deleted Successfully at:", result.rows[0].deleted_at);
-        
+
         return { res: result.rows[0], err: null };
     } catch (error) {
         console.error("Error in softDeleteUserInDb:", error);
