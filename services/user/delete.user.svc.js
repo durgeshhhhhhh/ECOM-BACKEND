@@ -1,14 +1,11 @@
 import { softDeleteUserInDb } from "../../db/user/delete.user.db.js";
-import { getDbInstance } from "../../db/config/config.db.js";
 
 export async function softDeleteUser(userId) {
-    const dbInstance = getDbInstance();
-
-    const result = await softDeleteUserInDb(userId, dbInstance);
+    const result = await softDeleteUserInDb(userId);
 
     if (result.err) {
         return { err: result.err };
     } else {
-        return {res: result.res};
+        return { res: result.res };
     }
 }

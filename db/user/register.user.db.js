@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
-export async function createuserInDb(dbObj, user) {
+import { getDbInstance } from "../config/config.db.js";
+export async function createuserInDb(user) {
     try {
+        let dbObj = getDbInstance();
         const checkResult = await dbObj.query(
             "SELECT *FROM users WHERE email = $1",
             [user.email]
@@ -27,7 +29,7 @@ export async function createuserInDb(dbObj, user) {
             );
 
             console.log(res.rows[0]);
-            console.log("User created at:",updateQuery.rows[0].created_at);
+            console.log("User created at:", updateQuery.rows[0].created_at);
             return { res: res.rows[0], err: null };
         }
     } catch (err) {

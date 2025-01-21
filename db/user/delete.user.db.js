@@ -1,5 +1,8 @@
-export async function softDeleteUserInDb(userId, dbObj) {
+import { getDbInstance } from "../config/config.db.js";
+
+export async function softDeleteUserInDb(userId) {
     try {
+        let dbObj = getDbInstance();
         const query = ` 
             UPDATE users 
             SET deleted_at = NOW(),

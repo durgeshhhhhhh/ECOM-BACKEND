@@ -1,4 +1,8 @@
-export async function activateUserInDb(userId, dbObj) {
+import { getDbInstance } from "../config/config.db.js";
+
+export async function activateUserInDb(userId) {
+    let dbObj = getDbInstance();
+
     const query = `
     UPDATE users
     SET is_active = true,

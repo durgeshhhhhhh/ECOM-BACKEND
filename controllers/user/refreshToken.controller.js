@@ -20,6 +20,12 @@ export async function refreshTokenController(req, res) {
             return res.status(401).json({ error: "Account has been deleted" });
         }
 
+        if (!queryResult.rows[0].is_active) {
+            return res
+                .status(401)
+                .json({ error: "Account has been deactivated" });
+        }
+
         try {
             const user = jwt.verify(
                 refreshToken,

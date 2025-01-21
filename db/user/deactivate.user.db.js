@@ -1,5 +1,9 @@
-export async function deactivateUserInDb(userId, dbObj) {
+import { getDbInstance } from "../config/config.db.js";
+
+export async function deactivateUserInDb(userId) {
     try {
+        let dbObj = getDbInstance();
+
         const query = `
         UPDATE users
         SET is_active = false,

@@ -1,11 +1,14 @@
+import { getDbInstance } from "../config/config.db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import env from "dotenv";
 
 env.config();
 
-export async function verifyUserInDb(dbObj, user) {
+export async function verifyUserInDb(user) {
     try {
+        let dbObj = getDbInstance();
+
         const queryResult = await dbObj.query(
             "SELECT * FROM USERS WHERE email = $1",
             [user.email]

@@ -1,5 +1,9 @@
-export async function updateUserInDb(userId, updatedData, dbObj) {
+import { getDbInstance } from "../config/config.db.js";
+
+export async function updateUserInDb(userId, updatedData) {
     try {
+        let dbObj = getDbInstance();
+        
         const { name, email, phone_no, dob } = updatedData;
 
         const query = `UPDATE users 
