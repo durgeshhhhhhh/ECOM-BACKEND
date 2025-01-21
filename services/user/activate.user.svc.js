@@ -1,6 +1,6 @@
 import { activateUserInDb } from "../../db/user/activate.user.db.js";
 
-export async function activateUser(userId) {
+export async function activateUserSvc(userId) {
     const result = await activateUserInDb(userId);
 
     if (!!result.err) {

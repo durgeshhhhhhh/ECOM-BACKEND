@@ -1,6 +1,6 @@
 import { createuserInDb } from "../../db/user/register.user.db.js";
 
-export async function createUser(name, phone_no, dob, email, password) {
+export async function createUserSvc(name, phone_no, dob, email, password) {
     let res = await createuserInDb({
         name,
         phone_no,

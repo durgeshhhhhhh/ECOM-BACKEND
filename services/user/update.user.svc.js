@@ -1,6 +1,6 @@
 import { updateUserInDb } from "../../db/user/update.user.db.js";
 
-export async function updateUser(userId, updatedData) {
+export async function updateUserSvc(userId, updatedData) {
     const result = await updateUserInDb(userId, updatedData);
 
     if (result.err) {

@@ -1,4 +1,4 @@
-import { softDeleteUser } from "../../services/user/delete.user.svc.js";
+import { softDeleteUserSvc } from "../../services/user/delete.user.svc.js";
 
 export async function deleteUserController(req, res) {
     const userId = req.user?.id;
@@ -7,7 +7,7 @@ export async function deleteUserController(req, res) {
         return res.status(400).json({ error: "Unauthorized" });
     }
 
-    const response = await softDeleteUser(userId);
+    const response = await softDeleteUserSvc(userId);
 
     if (response.err) {
         return res.status(400).json({ error: response.err });

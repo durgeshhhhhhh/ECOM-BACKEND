@@ -1,6 +1,6 @@
 import { deactivateUserInDb } from "../../db/user/deactivate.user.db.js";
 
-export async function deactivateUser(userId) {
+export async function deactivateUserSvc(userId) {
     const result = await deactivateUserInDb(userId);
 
     if (!!result.err) {
