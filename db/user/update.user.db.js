@@ -1,4 +1,5 @@
 import { getDbInstance } from "../config/config.db.js";
+import { userQueries } from "./query.db.js";
 
 export async function updateUserInDb(userId, updatedData) {
     try {
@@ -6,17 +7,7 @@ export async function updateUserInDb(userId, updatedData) {
         
         const { name, email, phone_no, dob } = updatedData;
 
-        const query = `UPDATE users 
-        SET 
-        name = COALESCE($1, name),
-        email = COALESCE($2, email),
-        phone_no = COALESCE($3, phone_no),
-        dob = COALESCE($4, dob)
-        where id = $5
-        RETURNING id, name, email, phone_no, dob;
-        `;
-
-        const result = await dbObj.query(query, [
+        const result = await dbObj.query(userQueries.updateUserById, [
             name,
             email,
             phone_no,

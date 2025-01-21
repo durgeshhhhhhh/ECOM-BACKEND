@@ -2,6 +2,7 @@ import { getDbInstance } from "../config/config.db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import env from "dotenv";
+import { userQueries } from "./query.db.js";
 
 env.config();
 
@@ -9,10 +10,9 @@ export async function verifyUserInDb(user) {
     try {
         let dbObj = getDbInstance();
 
-        const queryResult = await dbObj.query(
-            "SELECT * FROM USERS WHERE email = $1",
-            [user.email]
-        );
+        const queryResult = await dbObj.query(userQueries.selectUserByEmail, [
+            user.email,
+        ]);
 
         if (queryResult.rows[0].deleted_at) {
             return { res: null, err: "Account has been deleted" };
@@ -40,10 +40,10 @@ export async function verifyUserInDb(user) {
                     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
                 );
 
-                await dbObj.query(
-                    "UPDATE users SET refresh_token = $1 where id = $2",
-                    [refreshToken, detail.id]
-                );
+                await dbObj.query(userQueries.userRefreshTokenById, [
+                    refreshToken,
+                    detail.id,
+                ]);
 
                 const res = {
                     message: "Login Succesfull",

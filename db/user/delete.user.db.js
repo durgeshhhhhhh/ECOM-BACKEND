@@ -1,23 +1,19 @@
 import { getDbInstance } from "../config/config.db.js";
+import { userQueries } from "./query.db.js";
 
 export async function softDeleteUserInDb(userId) {
     try {
         let dbObj = getDbInstance();
-        const query = ` 
-            UPDATE users 
-            SET deleted_at = NOW(),
-            is_active = false
-            WHERE id = $1
-            returning id, name, email, phone_no, dob, deleted_at;
-            `;
 
-        const result = await dbObj.query(query, [userId]);
+        const result = await dbObj.query(userQueries.userDeletedAtById, [
+            userId,
+        ]);
 
         if (result.rows.length === 0) {
             return { res: null, err: "User Not Found" };
         }
 
-        console.log(result.rows[0])
+        console.log(result.rows[0]);
         console.log("User Deleted Successfully at:", result.rows[0].deleted_at);
 
         return { res: result.rows[0], err: null };

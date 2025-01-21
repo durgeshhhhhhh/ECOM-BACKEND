@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { getDbInstance } from "../db/config/config.db.js";
+import { userQueries } from "../db/user/query.db.js";
 
 export async function jwtAuthentication(req, res, next) {
     const token = req.headers["authorization"]?.split(" ")[1];
@@ -12,9 +13,7 @@ export async function jwtAuthentication(req, res, next) {
         const id = decode.id;
         let dbObj = getDbInstance();
 
-        const result = await dbObj.query("SELECT *FROM users WHERE id = $1", [
-            id,
-        ]);
+        const result = await dbObj.query(userQueries.selectUserById, [id]);
 
         const user = result.rows[0];
 
@@ -38,7 +37,7 @@ export async function jwtAuthentication(req, res, next) {
         }
 
         const userData = await dbObj.query(
-            "SELECT id, name, email, phone_no, dob FROM PUBLIC.users WHERE id = $1",
+            userQueries.selectUserDataById,
             [id]
         );
 

@@ -1,18 +1,11 @@
 import { getDbInstance } from "../config/config.db.js";
+import { userQueries } from "./query.db.js";
 
 export async function activateUserInDb(userId) {
     let dbObj = getDbInstance();
 
-    const query = `
-    UPDATE users
-    SET is_active = true,
-    deactivated_at = null
-    WHERE id = $1
-    RETURNING id, name, email, phone_no, dob, deactivated_at;
-    `;
-
     try {
-        const result = await dbObj.query(query, [userId]);
+        const result = await dbObj.query(userQueries.activateUserById, [userId]);
 
         if (result.rows.length === 0) {
             return res.status(400).json({ error: "User Not Found" });

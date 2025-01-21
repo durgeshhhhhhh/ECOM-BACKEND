@@ -1,18 +1,13 @@
 import { getDbInstance } from "../config/config.db.js";
+import { userQueries } from "./query.db.js";
 
 export async function deactivateUserInDb(userId) {
     try {
         let dbObj = getDbInstance();
 
-        const query = `
-        UPDATE users
-        SET is_active = false,
-        deactivated_at = NOW()
-        where id = $1
-        RETURNING id, name, email, phone_no, dob, deactivated_at;
-        `;
-
-        const result = await dbObj.query(query, [userId]);
+        const result = await dbObj.query(userQueries.deactivateUserById, [
+            userId,
+        ]);
 
         if (result.rows.length === 0) {
             return { res: null, err: "User not found" };
