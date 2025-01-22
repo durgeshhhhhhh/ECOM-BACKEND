@@ -1,11 +1,9 @@
+import { userQueries } from "./query.db.js";
+import { getDbInstance } from "../config/config.db.js";
 import jwt from "jsonwebtoken";
-import { getDbInstance } from "../../db/config/config.db.js";
-import { userQueries } from "../../db/user/query.db.js";
 
-export async function refreshTokenController(req, res) {
+export async function refreshTokenInDb(refreshToken) {
     const dbObj = getDbInstance();
-
-    const refreshToken = req.body.refreshToken;
 
     try {
         const queryResult = await dbObj.query(
@@ -14,17 +12,15 @@ export async function refreshTokenController(req, res) {
         );
 
         if (queryResult.rows.length === 0) {
-            return res.status(401).json({ error: "Invalid Refresh Token" });
+            return { res: null, err: "Invalid Refresh Tokren" };
         }
 
         if (queryResult.rows[0].deleted_at) {
-            return res.status(401).json({ error: "Account has been deleted" });
+            return { res: null, err: "Account has been deleted" };
         }
 
         if (!queryResult.rows[0].is_active) {
-            return res
-                .status(401)
-                .json({ error: "Account has been deactivated" });
+            return { res: null, err: "Account has been deactivated" };
         }
 
         try {
@@ -39,12 +35,19 @@ export async function refreshTokenController(req, res) {
                 { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
             );
 
-            console.log("New accessToken: ", accessToken);
-            res.json({ accessToken });
+            const res = {
+                message: "Token Refreshed",
+                "Access Token": accessToken,
+            };
+
+            console.log(res);
+            return { res: res, err: null };
         } catch (error) {
-            returnres.status(401).json({ error: "Invalid Refresh Token" });
+            console.error("Error during refresh token", error);
+            return { res: null, err: "Invalid Refresh Token" };
         }
     } catch (error) {
-        return res.status(500).json({ error: "Internal server error" });
+        console.error("Error during refresh token", error);
+        return { res: null, err: "Internal Server Error" };
     }
 }
