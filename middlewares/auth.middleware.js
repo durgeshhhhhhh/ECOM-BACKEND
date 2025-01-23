@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
-import { getDbInstance } from "../db/config/config.db.js";
-import { userQueries } from "../db/user/query.db.js";
+import { authDb } from "../db/user/auth.db.js";
 
 export async function jwtAuthentication(req, res, next) {
     const token = req.headers["authorization"]?.split(" ")[1];
@@ -11,11 +10,8 @@ export async function jwtAuthentication(req, res, next) {
     try {
         const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const id = decode.id;
-        let dbObj = getDbInstance();
 
-        const result = await dbObj.query(userQueries.selectUserById, [id]);
-
-        const user = result.rows[0];
+        const user = await authDb(id);
 
         if (user.deleted_at) {
             return res.status(401).json({ error: "Account has been deleted" });
@@ -36,12 +32,15 @@ export async function jwtAuthentication(req, res, next) {
                 .json({ "Token is invalid": "User has Logged out" });
         }
 
-        const userData = await dbObj.query(
-            userQueries.selectUserDataById,
-            [id]
-        );
+        const userData = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone_no: user.phone_no,
+            dob: user.dob,
+        };
 
-        req.user = userData.rows[0];
+        req.user = userData;
 
         next();
     } catch (error) {
