@@ -11,6 +11,7 @@ export async function createUserTable(dbObj) {
         logout_at TIMESTAMP WITH TIME ZONE,
         is_active BOOLEAN DEFAULT TRUE,
         deactivated_at TIMESTAMP WITH TIME ZONE,
+        reactivated_at TIMESTAMP WITH TIME ZONE,
         deleted_at TIMESTAMP WITH TIME ZONE
     )`;
 

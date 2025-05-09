@@ -1,7 +1,7 @@
 const insertUserInDb = `INSERT INTO 
                         users (name, phone_no, dob, email, password) 
                         VALUES($1, $2, $3, $4, $5) 
-                        RETURNING id, name, phone_no, dob, email;`;
+                        RETURNING id, name, phone_no, dob, email, password;`;
 
 const selectUserByEmail = "SELECT * FROM users WHERE email = $1";
 
@@ -23,9 +23,11 @@ const deactivateUserById = ` UPDATE users
 
 const activateUserById = ` UPDATE users
                            SET is_active = true,
-                           deactivated_at = null
+                           deactivated_at = null,
+                           logout_at = null,
+                           reactivated_at = NOW()
                            WHERE id = $1
-                           RETURNING id, name, email, phone_no, dob, deactivated_at;`;
+                           RETURNING id, name, email, phone_no, dob, reactivated_at;`;
 
 const updateUserById = `UPDATE users 
                          SET 
@@ -42,24 +44,27 @@ const selectUserDataById = `SELECT id, name, email, phone_no, dob FROM PUBLIC.us
 
 const selectUserByRefreshToken = `SELECT *FROM PUBLIC.users WHERE refresh_token = $1`;
 
+const selectUserByVerificationCode = `SELECT *FROM PUBLIC.users WHERE verification_code = $1`;
+
 const userLogoutById = `UPDATE USERS 
                         SET refresh_token = null, logout_at = NOW() 
                         WHERE id = $1 
-                        RETURNING id, name, email, phone_no, dob, logout_at;`
+                        RETURNING id, name, email, phone_no, dob, logout_at;`;
 
 const userQueries = {
-    insertUserInDb,
-    selectUserByEmail,
-    userCreatedAtById,
-    userRefreshTokenById,
-    userDeletedAtById,
-    deactivateUserById,
-    activateUserById,
-    updateUserById,
-    selectUserById,
-    selectUserDataById,
-    selectUserByRefreshToken,
-    userLogoutById
+  insertUserInDb,
+  selectUserByEmail,
+  userCreatedAtById,
+  userRefreshTokenById,
+  userDeletedAtById,
+  deactivateUserById,
+  activateUserById,
+  updateUserById,
+  selectUserById,
+  selectUserDataById,
+  selectUserByRefreshToken,
+  selectUserByVerificationCode,
+  userLogoutById,
 };
 
 export { userQueries };

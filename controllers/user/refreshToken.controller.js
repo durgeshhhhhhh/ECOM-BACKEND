@@ -3,48 +3,44 @@ import { getDbInstance } from "../../db/config/config.db.js";
 import { userQueries } from "../../db/user/query.db.js";
 
 export async function refreshTokenController(req, res) {
-    const dbObj = getDbInstance();
+  const dbObj = getDbInstance();
 
-    const refreshToken = req.body.refreshToken;
+  const refreshToken = req.body.refreshToken;
+
+  try {
+    const queryResult = await dbObj.query(
+      userQueries.selectUserByRefreshToken,
+      [refreshToken]
+    );    
+
+    if (queryResult.rows.length === 0) {
+      return res.status(401).json({ error: "Invalid Refresh Token" });
+    }
+
+    if (queryResult.rows[0].deleted_at) {
+      return res.status(401).json({ error: "Account has been deleted" });
+    }
+
+    if (!queryResult.rows[0].is_active) {
+      return res.status(401).json({ error: "Account has been deactivated" });
+    }
 
     try {
-        const queryResult = await dbObj.query(
-            userQueries.selectUserByRefreshToken,
-            [refreshToken]
-        );
+      const user = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-        if (queryResult.rows.length === 0) {
-            return res.status(401).json({ error: "Invalid Refresh Token" });
-        }
+      const accessToken = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+      );
 
-        if (queryResult.rows[0].deleted_at) {
-            return res.status(401).json({ error: "Account has been deleted" });
-        }
-
-        if (!queryResult.rows[0].is_active) {
-            return res
-                .status(401)
-                .json({ error: "Account has been deactivated" });
-        }
-
-        try {
-            const user = jwt.verify(
-                refreshToken,
-                process.env.REFRESH_TOKEN_SECRET
-            );
-
-            const accessToken = jwt.sign(
-                { id: user.id, email: user.email },
-                process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-            );
-
-            console.log("New accessToken: ", accessToken);
-            res.json({ accessToken });
-        } catch (error) {
-            returnres.status(401).json({ error: "Invalid Refresh Token" });
-        }
+      console.log("New accessToken: ", accessToken);
+      res.json({ accessToken });
     } catch (error) {
-        return res.status(500).json({ error: "Internal server error" });
+      console.log("Error: ", error);
+      return res.status(401).json({ error: "Invalid Refresh Token" });
     }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
 }

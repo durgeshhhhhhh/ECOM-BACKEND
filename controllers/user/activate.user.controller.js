@@ -1,20 +1,20 @@
 import { activateUserSvc } from "../../services/user/activate.user.svc.js";
 
 export async function activateUserController(req, res) {
-    const userId = req.user?.id;
+  const { email, password } = req.body;
 
-    if (!userId) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
+  }
 
-    const response = await activateUserSvc(userId);
+  const response = await activateUserSvc(email, password);
 
-    if (response.err) {
-        return res.status(400).json({ error: response.err });
-    }
+  if (response.err) {
+    return res.status(400).json({ error: response.err });
+  }
 
-    return res.json({
-        message: "User activated successfully!!",
-        resp: response.res,
-    });
+  return res.json({
+    message: "Account activated successfully!!",
+    resp: response.res,
+  });
 }

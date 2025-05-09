@@ -3,40 +3,57 @@ import { getDbInstance } from "../config/config.db.js";
 import { userQueries } from "./query.db.js";
 
 export async function createuserInDb(user) {
-    try {
-        let dbObj = getDbInstance();
-        const checkResult = await dbObj.query(userQueries.selectUserByEmail, [
-            user.email,
-        ]);
+  try {
+    let dbObj = getDbInstance();
+    const checkResult = await dbObj.query(userQueries.selectUserByEmail, [
+      user.email,
+    ]);
 
-        if (checkResult.rows.length > 0) {
-            return {
-                res: null,
-                err: "E-mail address already exist..try to logIn",
-            };
-        } else {
-            const saltRounds = 10;
-            const hash = await bcrypt.hash(user.password, saltRounds);
-            const res = await dbObj.query(userQueries.insertUserInDb, [
-                user.name,
-                user.phone_no,
-                user.dob,
-                user.email,
-                hash,
-            ]);
+    if (checkResult.rows.length > 0) {
+      const existingUser = checkResult.rows[0];
 
-            const newUser = res.rows[0];
+      if (existingUser.deleted_at) {
+        return {
+          res: null,
+          err: "This email was previously registered but the account has been deleted. Please use a different email address.",
+        };
+      }
 
-            const updateQuery = await dbObj.query(userQueries.userCreatedAtById, [
-                newUser.id,
-            ]);
+      if (!existingUser.is_active) {
+        return {
+          res: null,
+          err: "This account is deactivated. Please use the activation process to reactivate your account.",
+        };
+      }
 
-            console.log(res.rows[0]);
-            console.log("User created at:", updateQuery.rows[0].created_at);
-            return { res: res.rows[0], err: null };
-        }
-    } catch (err) {
-        console.error("Error in createUSerInDb:", err);
-        return { res: null, err: err };
+      return {
+        res: null,
+        err: "E-mail address already exists. Please log in instead.",
+      };
+    } else {
+      const saltRounds = 10;
+      const hash = await bcrypt.hash(user.password, saltRounds);
+
+      const res = await dbObj.query(userQueries.insertUserInDb, [
+        user.name,
+        user.phone_no,
+        user.dob,
+        user.email,
+        hash,
+      ]);
+
+      const newUser = res.rows[0];
+
+      const updateQuery = await dbObj.query(userQueries.userCreatedAtById, [
+        newUser.id,
+      ]);
+
+      console.log(res.rows[0]);
+      console.log("User created at:", updateQuery.rows[0].created_at);
+      return { res: res.rows[0], err: null };
     }
+  } catch (err) {
+    console.error("Error in createUSerInDb:", err);
+    return { res: null, err: err };
+  }
 }
