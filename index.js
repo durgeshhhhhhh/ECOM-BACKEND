@@ -2,6 +2,7 @@ import express from "express";
 import { routes } from "./routers/router.js";
 import { dbSetup, getDbInstance } from "./db/config/config.db.js";
 import { createUserTable } from "./migrations/createUser.mig.js";
+import { createProductTable } from "./migrations/createProduct.mig.js";
 
 async function main() {
   const app = express();
@@ -12,6 +13,7 @@ async function main() {
   app.use(routes());
   await dbSetup();
   await createUserTable(getDbInstance());
+  await createProductTable(getDbInstance());
 
   app.listen(3000, (req, res) => {
     console.log("server is running on port 3000");
