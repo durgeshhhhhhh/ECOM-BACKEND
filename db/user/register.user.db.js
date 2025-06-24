@@ -32,6 +32,7 @@ export async function createuserInDb(user) {
       };
     } else {
       const saltRounds = 10;
+
       const hash = await bcrypt.hash(user.password, saltRounds);
 
       const res = await dbObj.query(userQueries.insertUserInDb, [

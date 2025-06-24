@@ -27,6 +27,10 @@ export async function activateUserInDb(email, password) {
       };
     }
 
+    if (user.is_active) {
+      return { res: null, err: "Account is already active" };
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return { res: null, err: "Invalid username or password" };
@@ -53,20 +57,32 @@ export async function activateUserInDb(email, password) {
     ]);
 
     const res = {
-      message: "User activated Successfully",
-      "Access Token": accessToken,
-      "Refresh Token": refreshToken,
+      message: "Account Reactivated Successfully",
+      "AccessToken": accessToken,
+      "RefreshToken": refreshToken,
     };
 
     console.log(res);
-    console.log("User activated Successfully at", activatedUser.reactivated_at);
+    console.log(
+      "Account Reactivated Successfully at",
+      activatedUser.reactivated_at
+    );
+
+    const sanitizedUser = {
+      id: activatedUser.id,
+      email: activatedUser.email,
+      name: activatedUser.name,
+      phone_no: activatedUser.phone_no,
+      is_active: activatedUser.is_active,
+      reactivated_at: activatedUser.reactivated_at,
+    };
 
     return {
       res: {
-        ...activatedUser,
+        ...sanitizedUser,
         message: "Account Reactivated Successfully",
-        "Access Token": accessToken,
-        "Refresh Token": refreshToken,
+        "AccessToken": accessToken,
+        "RefreshToken": refreshToken,
       },
       err: null,
     };
