@@ -1,11 +1,7 @@
-import { refreshTokenInDb } from "../../db/user/refreshToken.db.js";
-
-export async function refreshTokenSvc(refreshToken) {
-    let res = await refreshTokenInDb(refreshToken);
-
-    if (!!res.err) {
-        return { err: res.err };
+// ...existing code...
+    if (!!res.error) {  // Changed from err to error
+        return { error: res.error };  // Changed from err to error
     } else {
         return res.res;
     }
-}
+// ...existing code...

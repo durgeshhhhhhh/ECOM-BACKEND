@@ -1,4 +1,4 @@
-import { createUserSvc } from "../../services/user/register.user.svc.js";
+import { createUserSvc } from "../../services/user/signup.user.service.js";
 
 export async function signupController(req, res) {
   let body = req.body;
@@ -11,7 +11,7 @@ export async function signupController(req, res) {
     body?.password
   );
 
-  if (!!resp.err) {
+  if (!!resp.error) {
     return res.status(400).json({ error: resp.err });
   } else {
     res.json({ mssg: "Successfully Registered", resp: resp });

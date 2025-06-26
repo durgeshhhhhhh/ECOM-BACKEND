@@ -1,4 +1,4 @@
-import { softDeleteUserSvc } from "../../services/user/delete.user.svc.js";
+import { softDeleteUserSvc } from "../../services/user/delete.user.service.js";
 
 export async function deleteUserController(req, res) {
   const userId = req.user?.id;

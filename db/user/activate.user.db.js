@@ -15,7 +15,7 @@ export async function activateUserInDb(email, password) {
     ]);
 
     if (userResult.rows.length === 0) {
-      return { res: null, err: "User not found" };
+      return { res: null, error: "User not found" };
     }
 
     const user = userResult.rows[0];
@@ -23,17 +23,17 @@ export async function activateUserInDb(email, password) {
     if (user.deleted_at) {
       return {
         res: null,
-        err: "Account has been deleted and cannot be reactivated",
+        error: "Account has been deleted and cannot be reactivated",
       };
     }
 
     if (user.is_active) {
-      return { res: null, err: "Account is already active" };
+      return { res: null, error: "Account is already active" };
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return { res: null, err: "Invalid username or password" };
+      return { res: null, error: "Invalid username or password" };
     }
 
     const result = await dbObj.query(userQueries.activateUserById, [user.id]);
@@ -58,8 +58,8 @@ export async function activateUserInDb(email, password) {
 
     const res = {
       message: "Account Reactivated Successfully",
-      "AccessToken": accessToken,
-      "RefreshToken": refreshToken,
+      AccessToken: accessToken,
+      RefreshToken: refreshToken,
     };
 
     console.log(res);
@@ -81,13 +81,13 @@ export async function activateUserInDb(email, password) {
       res: {
         ...sanitizedUser,
         message: "Account Reactivated Successfully",
-        "AccessToken": accessToken,
-        "RefreshToken": refreshToken,
+        AccessToken: accessToken,
+        RefreshToken: refreshToken,
       },
-      err: null,
+      error: null,
     };
   } catch (error) {
     console.error("Error in activateUserInDb:", error);
-    return { res: null, err: error.message };
+    return { res: null, error: error.message };
   }
 }

@@ -17,7 +17,7 @@ export async function verifyUserInDb(user) {
     if (queryResult.rows.length === 0) {
       return {
         res: null,
-        err: "Username does not exist ... Register First!!!!",
+        error: "Username does not exist ... Register First!!!!",
       };
     }
 
@@ -63,12 +63,12 @@ export async function verifyUserInDb(user) {
       };
 
       console.log(res);
-      return { res: res, err: null };
+      return { res: res, error: null };
     } else {
-      return { res: null, err: "Invalid username or password!!" };
+      return { res: null, error: "Invalid username or password!!" };
     }
   } catch (error) {
     console.error("Error in verifyUserInDb:", error);
-    return { res: null, err: error.message };
+    return { res: null, error: error.message };
   }
 }

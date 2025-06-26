@@ -1,4 +1,4 @@
-import { verifyUserSvc } from "../../services/user/login.user.svc.js";
+import { verifyUserSvc } from "../../services/user/login.user.service.js";
 
 export async function loginController(req, res) {
   let body = req.body;

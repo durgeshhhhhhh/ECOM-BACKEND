@@ -10,9 +10,9 @@ export async function logoutUserInDb(userId) {
     console.log(result.rows[0]);
     console.log("User Logout Successfully at:", result.rows[0].logout_at);
 
-    return { res: result.rows[0], err: null };
+    return { res: result.rows[0], error: null };
   } catch (error) {
     console.error("Error during logout:", error);
-    return { res: null, err: error.message };
+    return { res: null, error: error.message };
   }
 }

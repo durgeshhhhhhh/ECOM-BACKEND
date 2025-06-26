@@ -1,4 +1,4 @@
-import { logoutUserSvc } from "../../services/user/logout.user.svc.js";
+import { logoutUserSvc } from "../../services/user/logout.user.service.js";
 
 export async function logoutController(req, res) {
   const userId = req.user?.id;

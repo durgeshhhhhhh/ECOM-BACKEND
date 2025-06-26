@@ -1,4 +1,4 @@
-import { activateUserSvc } from "../../services/user/activate.user.svc.js";
+import { activateUserSvc } from "../../services/user/activate.user.service.js";
 
 export async function activateUserController(req, res) {
   const { email, password } = req.body;

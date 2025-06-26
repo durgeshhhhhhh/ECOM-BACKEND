@@ -1,17 +1,5 @@
-import { createuserInDb } from "../../db/user/register.user.db.js";
-
-export async function createUserSvc(name, phone_no, dob, email, password) {
-  let res = await createuserInDb({
-    name,
-    phone_no,
-    dob,
-    email,
-    password,
-  });
-
-  if (!!res.err) {
-    return { err: res.err };
+if (!!res.error) {  // Changed from err to error
+    return { error: res.error };  // Changed from err to error
   } else {
     return res.res;
   }
-}

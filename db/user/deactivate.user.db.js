@@ -8,7 +8,7 @@ export async function deactivateUserInDb(userId) {
     const result = await dbObj.query(userQueries.deactivateUserById, [userId]);
 
     if (result.rows.length === 0) {
-      return { res: null, err: "User not found" };
+      return { res: null, error: "User not found" };
     }
 
     console.log(result.rows[0]);
@@ -17,9 +17,9 @@ export async function deactivateUserInDb(userId) {
       result.rows[0].deactivated_at
     );
 
-    return { res: result.rows[0], err: null };
+    return { res: result.rows[0], error: null };
   } catch (error) {
     console.error("Error in deactivateUserInDb:", error);
-    return { res: null, err: error.message };
+    return { res: null, error: error.message };
   }
 }

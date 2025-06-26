@@ -16,12 +16,12 @@ export async function updateUserInDb(userId, updatedData) {
     ]);
 
     if (result.rows.length === 0) {
-      return { res: null, err: "user not found" };
+      return { res: null, error: "user not found" };
     }
 
     console.log(result.rows[0]);
-    return { res: result.rows[0], err: null };
+    return { res: result.rows[0], error: null };
   } catch (error) {
-    return { res: null, err: error.message };
+    return { res: null, error: error.message };
   }
 }

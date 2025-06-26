@@ -15,20 +15,20 @@ export async function createuserInDb(user) {
       if (existingUser.deleted_at) {
         return {
           res: null,
-          err: "This email was previously registered but the account has been deleted. Please use a different email address.",
+          error: "This email was previously registered but the account has been deleted. Please use a different email address.",
         };
       }
 
       if (!existingUser.is_active) {
         return {
           res: null,
-          err: "This account is deactivated. Please use the activation process to reactivate your account.",
+          error: "This account is deactivated. Please use the activation process to reactivate your account.",
         };
       }
 
       return {
         res: null,
-        err: "E-mail address already exists. Please log in instead.",
+        error: "E-mail address already exists. Please log in instead.",
       };
     } else {
       const saltRounds = 10;
@@ -51,10 +51,10 @@ export async function createuserInDb(user) {
 
       console.log(res.rows[0]);
       console.log("User created at:", updateQuery.rows[0].created_at);
-      return { res: res.rows[0], err: null };
+      return { res: res.rows[0], error: null };
     }
-  } catch (err) {
-    console.error("Error in createUSerInDb:", err);
-    return { res: null, err: err };
+  } catch (error) {
+    console.error("Error in createUSerInDb:", error);
+    return { res: null, error: error.message };
   }
 }

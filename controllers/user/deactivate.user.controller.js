@@ -1,4 +1,4 @@
-import { deactivateUserSvc } from "../../services/user/deactivate.user.svc.js";
+import { deactivateUserSvc } from "../../services/user/deactivate.user.service.js";
 
 export async function deactivateUserController(req, res) {
   const userId = req.user?.id;
